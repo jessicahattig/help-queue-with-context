@@ -17,6 +17,7 @@ function App(){
   }
 
   return (
+    <React.Fragment>
     <ThemeContext.Provider value={theme}>
       <Header />
       <ThemeContext.Consumer>
@@ -24,6 +25,7 @@ function App(){
       </ThemeContext.Consumer>
       <TicketControl />
     </ThemeContext.Provider>
+    </React.Fragment>
   );
 }
 
