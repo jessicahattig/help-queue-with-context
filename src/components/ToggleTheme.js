@@ -2,11 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 function ToggleTheme(props) {
-  const { theme, toggleTheme } = props;
-
-  if (!theme) {
-    throw new Error("ThemeContext must be used within a ThemeContext.Provider!");
-  }
+  const theme = props.theme
 
   const styles = { 
     backgroundColor: theme.buttonBackground, 
@@ -15,7 +11,7 @@ function ToggleTheme(props) {
 
   return (
     <React.Fragment>
-      <button style={styles} onClick={toggleTheme}>
+      <button style={styles} onClick={props.toggleTheme}>
         {theme.textColor === "AntiqueWhite" ? "toggle light theme" : "toggle dark theme"}
       </button>
       <hr/>
@@ -24,8 +20,8 @@ function ToggleTheme(props) {
 }
 
 ToggleTheme.propTypes = {
-  toggleTheme: PropTypes.func,
-  theme: PropTypes.object
+  theme: PropTypes.object,
+  toggleTheme: PropTypes.func
 }
 
 export default ToggleTheme;

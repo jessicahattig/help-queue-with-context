@@ -3,7 +3,8 @@ import NewTicketForm from './NewTicketForm';
 import TicketList from './TicketList';
 import EditTicketForm from './EditTicketForm';
 import TicketDetail from './TicketDetail';
-import { ThemeContext } from '../context/theme-context';
+import ReusableForm from './ReusableForm';
+import PropTypes from 'prop-types';
 
 class TicketControl extends React.Component {
 
@@ -66,7 +67,7 @@ class TicketControl extends React.Component {
   }
 
   render(){
-    let theme = this.context;
+    let theme = this.props.theme;
 
     const buttonStyles = { 
       backgroundColor: theme.buttonBackground, 
@@ -75,33 +76,52 @@ class TicketControl extends React.Component {
 
     let currentlyVisibleState = null;
     let buttonText = null; 
+
     if (this.state.editing ) {      
-      currentlyVisibleState = <EditTicketForm ticket = {this.state.selectedTicket} onEditTicket = {this.handleEditingTicketInList} />
+      currentlyVisibleState = (
+        <EditTicketForm>
+          <ReusableForm 
+            handleFormSubmission={this.handleEditingTicketInList}
+            buttonText="Update Ticket" 
+            theme={theme}/>
+        </EditTicketForm>
+      );
       buttonText = "Return to Ticket List";
     } else if (this.state.selectedTicket != null) {
       currentlyVisibleState = <TicketDetail 
       ticket={this.state.selectedTicket} 
       onClickingDelete={this.handleDeletingTicket}
-      onClickingEdit = {this.handleEditClick} />
+      onClickingEdit = {this.handleEditClick} 
+      theme={theme} />
       buttonText = "Return to Ticket List";
     } else if (this.state.formVisibleOnPage) {
-      currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList}/>;
+      currentlyVisibleState = (
+        <NewTicketForm>
+          <ReusableForm 
+            handleFormSubmission={this.handleAddingNewTicketToList}
+            buttonText="Help!" 
+            theme={theme}/>
+        </NewTicketForm>
+      );
       buttonText = "Return to Ticket List"; 
     } else {
-      currentlyVisibleState = <TicketList onTicketSelection={this.handleChangingSelectedTicket} ticketList={this.state.mainTicketList} />;
+      currentlyVisibleState = <TicketList 
+      onTicketSelection={this.handleChangingSelectedTicket} 
+      ticketList={this.state.mainTicketList} />;
       buttonText = "Add Ticket"; 
     }
+    
     return (
       <React.Fragment>
         {currentlyVisibleState}
-        <button style={buttonStyles} onClick={this.handleClick}>{buttonText}</button> 
+        <button style={buttonStyles}  onClick={this.handleClick}>{buttonText}</button> 
       </React.Fragment>
     );
   }
-
 }
 
-TicketControl.contextType = ThemeContext;
+TicketControl.propTypes = {
+  theme: PropTypes.object
+};
 
 export default TicketControl;
-

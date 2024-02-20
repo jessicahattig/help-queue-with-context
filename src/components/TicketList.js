@@ -6,7 +6,6 @@ function TicketList(props){
 
   return (
     <React.Fragment>
-      <hr/>
       {props.ticketList.map((ticket) =>
         <Ticket 
           whenTicketClicked={props.onTicketSelection}
@@ -26,4 +25,3 @@ TicketList.propTypes = {
 };
 
 export default TicketList;
-
